@@ -1,4 +1,10 @@
+
 #include <iostream>
+#include <set>
+#include <map>
+
+typedef std::set<char> Alphabet;
+typedef std::map<std::string, unsigned int> Model;
 
 struct Markov_model {
 unsigned int order;
