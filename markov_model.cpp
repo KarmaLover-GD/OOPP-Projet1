@@ -40,3 +40,13 @@ void markov_model(Markov_model &m, unsigned int order, const std::string &s)
 
         m.model[tmp] = occ;
     }
+}
+
+double laplace(const Markov_model& m, const std::string& s){
+
+//------------ Error Handling ------------------
+int alpha_sz = m.alphabet.size();
+
+double proba =  
+
+}
