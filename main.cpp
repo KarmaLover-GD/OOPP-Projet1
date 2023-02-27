@@ -10,7 +10,7 @@ int main(){
     
     markov_model(m, order, str);
 
-    std::cout << laplace(m, "bbb");
+    std::cout << laplace(m, "aaaa");
 
     return 0;
 }

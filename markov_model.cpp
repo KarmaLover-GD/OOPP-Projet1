@@ -35,7 +35,7 @@ void markov_model(Markov_model &m, unsigned int order, const std::string &s)
     // String must be longer than the order itself
     if (s.length() < order)
     {
-        throw;
+        throw std::length_error("tring must be longer than the order itself");
     }
 
     for (int i = 0; i < s.length(); i++)
@@ -75,9 +75,16 @@ void display_model(const Markov_model &m)
 
 double laplace(const Markov_model &m, const std::string &s)
 {
-
+    if(int(s.length()) != m.order ){
+        throw std::length_error("string must be as long as order"); //lenght _error()
+    }
+    for(int i = 0; i< s.length(); i++){
+        auto a = m.alphabet.find(s[i]);
+        if(a == m.alphabet.end())
+            throw std::domain_error("Unknow character"); // domain error()
+    }
     //------------ Error Handling ------------------
-    
+
     int alpha_sz = m.alphabet.size();
 
     std::cout<<"N(sc) + 1 = "<< double(m.model.find(s)->second + 1) <<std::endl;
