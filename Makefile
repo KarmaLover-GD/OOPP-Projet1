@@ -13,7 +13,7 @@ all: $(EXEC)
 
 markov: $(OBJECTS)
     $(LD) -o $(EXEC) $(OBJECTS) $(LDFLAGS)
-
+    
 main.o: main.cpp 
     $(CC) -c main.cpp -o main.o $(CFLAGS)
 
