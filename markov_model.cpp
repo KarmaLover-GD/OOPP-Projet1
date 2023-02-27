@@ -1,22 +1,8 @@
 #include <iostream>
 #include <error.h>
 #include "markov_model.hpp"
-
-void markov_model(Markov_model &m, unsigned int order, const std::string &s)
+static void fill_model(Model &m, unsigned int order, const std::string &s)
 {
-    // String must be longer than the order itself
-    if (s.length() < order)
-    {
-        throw;
-    }
-
-    for (int i = 0; i < s.length(); i++)
-    {
-        m.alphabet.insert(s[i]);
-    }
-
-    m.order = order;
-
     int occ;
     for (int i = 0; i < s.length(); i++)
     {
@@ -34,47 +20,70 @@ void markov_model(Markov_model &m, unsigned int order, const std::string &s)
             {
                 tmp = tmp + s[(i + j) % s.length()];
             }
-            std::cout<<tmp<<std::endl;
         }
-        if (m.model.count(tmp) > 0)
+        if (m.count(tmp) > 0)
         {
-            occ = m.model.find(tmp)->second + 1;
+            occ = m.find(tmp)->second + 1;
         }
-        
-            m.model[tmp] = occ;
-        
+
+        m[tmp] = occ;
     }
 }
 
-    void display_model(const Markov_model &m)
+void markov_model(Markov_model &m, unsigned int order, const std::string &s)
+{
+    // String must be longer than the order itself
+    if (s.length() < order)
     {
-
-        std::cout << "Order :" << m.order << std::endl;
-
-        std::cout << "Displaying alphabet " << std::endl;
-
-        for (auto it = m.alphabet.begin(); it !=
-                                           m.alphabet.end();
-             ++it)
-            std::cout << ' ' << *it;
-
-        std::cout << "Dispalying model" << std::endl;
-
-        auto it = m.model.begin();
-        while (it != m.model.end())
-        {
-            std::cout << "Key: " << it->first << ", Value: " << it->second << std::endl;
-            ++it;
-        }
+        throw;
     }
 
-    double laplace(const Markov_model &m, const std::string &s)
+    for (int i = 0; i < s.length(); i++)
     {
-
-        //------------ Error Handling ------------------
-        int alpha_sz = m.alphabet.size();
-
-        double proba = m.model.find(s)->second + 1 / m.model.find(s.substr(0, s.length() / 2))->second + alpha_sz;
-
-        return proba;
+        m.alphabet.insert(s[i]);
     }
+
+    m.order = order;
+
+    fill_model(m.model, order, s);
+    fill_model(m.model, order-1, s);
+    
+}
+
+
+void display_model(const Markov_model &m)
+{
+
+    std::cout << "Order :" << m.order << std::endl;
+
+    std::cout << "Displaying alphabet " << std::endl;
+
+    for (auto it = m.alphabet.begin(); it !=
+                                       m.alphabet.end();
+         ++it)
+        std::cout << ' ' << *it;
+
+    std::cout << "Dispalying model" << std::endl;
+
+    auto it = m.model.begin();
+    while (it != m.model.end())
+    {
+        std::cout << "Key: " << it->first << ", Value: " << it->second << std::endl;
+        ++it;
+    }
+}
+
+double laplace(const Markov_model &m, const std::string &s)
+{
+
+    //------------ Error Handling ------------------
+    
+    int alpha_sz = m.alphabet.size();
+
+    std::cout<<"N(sc) + 1 = "<< double(m.model.find(s)->second + 1) <<std::endl;
+    std::cout<<"N(s) + A = " <<  double(m.model.find(s.substr(0, s.length()  -1))->second + alpha_sz) << std::endl;
+
+    double proba = (double(m.model.find(s)->second + 1)) / double(m.model.find(s.substr(0, s.length()  -1))->second + alpha_sz);
+
+    return proba;
+}

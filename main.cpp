@@ -5,11 +5,12 @@
 int main(){
 
     Markov_model m;
-    std::string str = "voivoivoi unprogramme de stvtest";
+    std::string str = "aaaaaaaaaaaaa";
     int order = 3;
     
     markov_model(m, order, str);
 
-    display_model(m);
+    std::cout << laplace(m, "bbb");
 
+    return 0;
 }
