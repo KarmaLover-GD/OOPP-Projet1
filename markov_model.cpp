@@ -46,7 +46,7 @@ void markov_model(Markov_model &m, unsigned int order, const std::string &s)
     m.order = order;
 
     fill_model(m.model, order, s);
-    fill_model(m.model, order-1, s);
+    fill_model(m.model, order+1, s);
     
 }
 
@@ -75,8 +75,8 @@ void display_model(const Markov_model &m)
 
 double laplace(const Markov_model &m, const std::string &s)
 {
-    if(int(s.length()) != m.order ){
-        throw std::length_error("string must be as long as order"); //lenght _error()
+    if(int(s.length()) != m.order-1 ){
+        throw std::length_error("string must be of size order-1"); //lenght _error()
     }
     for(int i = 0; i< s.length(); i++){
         auto a = m.alphabet.find(s[i]);
