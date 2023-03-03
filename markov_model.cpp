@@ -1,5 +1,6 @@
 #include <iostream>
 #include <error.h>
+#include <cmath>
 #include "markov_model.hpp"
 static void fill_model(Model &m, unsigned int order, const std::string &s)
 {
@@ -93,4 +94,21 @@ double laplace(const Markov_model &m, const std::string &s)
     double proba = (double(m.model.find(s)->second + 1)) / double(m.model.find(s.substr(0, s.length()  -1))->second + alpha_sz);
 
     return proba;
+}
+
+double likelihood(Markov_model& m, const std::string& str){
+    if(str.length() < m.order-1)
+        throw std::length_error("string must be of size order-1"); 
+    std::string tmp = str.substr(0, m.order);
+    if(str.length() == m.order+1)
+        return log(laplace(m, str));
+
+    int acc = laplace(m, tmp);
+    for(int i = 1;i+m.order+1<str.length() ; i++){
+        tmp = str.substr(i, m.order);
+        acc *= laplace(m, tmp);
+    }
+    return log(acc);
+
+
 }
