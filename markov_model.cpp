@@ -76,8 +76,9 @@ void display_model(const Markov_model &m)
 
 double laplace(const Markov_model &m, const std::string &s)
 {
-    if(int(s.length()) != m.order-1 ){
-        throw std::length_error("string must be of size order-1"); //lenght _error()
+    if(int(s.length()) != m.order+1 ){
+        
+        throw std::length_error("string must be of size order + 1"); //lenght _error()
     }
     for(int i = 0; i< s.length(); i++){
         auto a = m.alphabet.find(s[i]);
@@ -88,8 +89,8 @@ double laplace(const Markov_model &m, const std::string &s)
 
     int alpha_sz = m.alphabet.size();
 
-    std::cout<<"N(sc) + 1 = "<< double(m.model.find(s)->second + 1) <<std::endl;
-    std::cout<<"N(s) + A = " <<  double(m.model.find(s.substr(0, s.length()  -1))->second + alpha_sz) << std::endl;
+    // std::cout<<"N(sc) + 1 = "<< double(m.model.find(s)->second + 1) <<std::endl;
+    // std::cout<<"N(s) + A = " <<  double(m.model.find(s.substr(0, s.length()  -1))->second + alpha_sz) << std::endl;
 
     double proba = (double(m.model.find(s)->second + 1)) / double(m.model.find(s.substr(0, s.length()  -1))->second + alpha_sz);
 
@@ -98,14 +99,14 @@ double laplace(const Markov_model &m, const std::string &s)
 
 double likelihood(Markov_model& m, const std::string& str){
     if(str.length() < m.order-1)
-        throw std::length_error("string must be of size order-1"); 
-    std::string tmp = str.substr(0, m.order);
+        throw std::length_error("string must be of size order-1 -----"); 
+    std::string tmp = str.substr(0, m.order+1);
     if(str.length() == m.order+1)
         return log(laplace(m, str));
 
     int acc = laplace(m, tmp);
     for(int i = 1;i+m.order+1<str.length() ; i++){
-        tmp = str.substr(i, m.order);
+        tmp = str.substr(i, m.order+1);
         acc *= laplace(m, tmp);
     }
     return log(acc);
