@@ -17,6 +17,10 @@ int main(int argc, char **argv)
             break;
         ifstream myfile;
         myfile.open(s);
+        if (myfile.is_open()){
+            myfile.read();
+        }
+
     }
 
     // markov_model(m, stoi(argv[0]), ):
