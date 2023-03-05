@@ -24,7 +24,6 @@ int main(int argc, char **argv)
     string tmp1, tmp2;
     trainers tr;
     int sep_idx = 0; 
-
     for (int i = 1; i < argc; i++)
     {
         string s(argv[i]);
@@ -34,7 +33,7 @@ int main(int argc, char **argv)
 
     if(sep_idx == 0 || sep_idx > argc)
         throw domain_error("No separator found");
-    
+    // Loading arguments and file contents 
     for(int i =1; i<argc; i++){
         string s(argv[i]);
         if(i<sep_idx){
@@ -58,13 +57,36 @@ int main(int argc, char **argv)
             }
         }
     }
-       
-        // else if (s.substr(0, 1) == "-")
-        // {
-        //     continue;
-        // }else if(s.substr(0, 1)=="I" ){
-            
-        // }
+    int value = -99999;
+    int best = -99999;
+    int best_idx = 0;
+    auto it = tr.begin();
+
+    while(it != tr.end()){
+        Markov_model m;
+        markov_model(m, stoi(argv[0]), it->second);
+        for(int i = 0; i<sample.size(); i++){
+            try
+            {
+                value = likelihood(m, sample[i]);
+                if(value>best){
+                    best = value;
+                    best_idx = i;
+                }
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+                cout<<"-";
+                value = -9999999;
+            }
+            cout<<value <<"is the likelihood for test"<<i <<"under trained set "<<it->first<<endl;
+        }
+        cout<<"the was with the highest likelihood was the number :"<<best_idx<< " Witrh a likelihood of"<<best<<endl;
+        best = -99999;
+        best_idx = 0;
+
+    }
     
 
     // markov_model(m, stoi(argv[0]), ):
