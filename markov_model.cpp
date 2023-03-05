@@ -103,15 +103,21 @@ double likelihood(Markov_model& m, const std::string& str){
         throw std::length_error("string must be of size order-1 -----"); 
         
     std::string tmp = str.substr(0, m.order+1);
-    if(str.length() == m.order+1)
-        return log(laplace(m, str));
+    
 
-    int acc = log(laplace(m, tmp));
-    for(int i = 1;i+m.order+1<str.length() ; i++){
+    int acc = 0;
+    for(int i = 0;i+m.order+1<str.length() ; i++){
         tmp = str.substr(i, m.order+1);
-        cout<<tmp<<endl;
-        cout<<laplace(m, tmp)<<endl;
-        acc += log(laplace(m, tmp));
+        try
+        {
+             acc += log(laplace(m, tmp));
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        
+       
     }
     return acc;
 
