@@ -6,13 +6,13 @@
 int main(){
 
     Markov_model m;
-    std::string str = "aaaaaaabaaaaa";
+    std::string str = "abcdefgacaa";
     int order = 3;
     
     markov_model(m, order, str);
 
-        std::cout<<likelihood(m, "aababb")<<std::endl;
-        //std::cout<<log(laplace(m, "aaaa"))<<std::endl;
+        std::cout<<likelihood(m, "abaafadcaaa")<<std::endl;
+        //std::cout<<log(laplace(m, "baaa"))<<std::endl;
 
     return 0;
 }
