@@ -114,7 +114,8 @@ double likelihood(Markov_model& m, const std::string& str){
         }
         catch(const std::exception& e)
         {
-            std::cerr << e.what() << '\n';
+            //std::cerr << e.what() << '\n';
+            throw std::domain_error("unknown character");
         }
         
        

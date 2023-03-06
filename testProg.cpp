@@ -21,10 +21,12 @@ int main(int argc, char **argv)
     if (!isNumber(order))
         throw domain_error("first argument should be a number");
 
-    vector<string> sample;
+    //vector<string> sample;
     Markov_model m;
     string tmp1, tmp2;
-    trainers tr;
+    trainers trData;
+    trainers trTest;
+
     int sep_idx = 0;
     for (int i = 2; i < argc; i++)
     {
@@ -48,7 +50,7 @@ int main(int argc, char **argv)
             {
                 getline(myfile, tmp1);
                 getline(myfile, tmp2);
-                tr[tmp1] = tmp2;
+                trData[tmp1] = tmp2;
             }
         }
         else if (i > sep_idx)
@@ -58,42 +60,46 @@ int main(int argc, char **argv)
             if (myfile.is_open())
             {
                 getline(myfile, tmp1);
-                sample.push_back(tmp1);
+                trTest[s] = tmp1;
             }
         }
     }
     int value = -99999;
     int best = -99999;
     int best_idx = 0;
-    string best_name;
-    auto it = tr.begin();
+    string best_name = "None";
+    auto it = trData.begin();
 
-    while (it != tr.end())
+    while (it != trData.end())
     {
         Markov_model m;
         markov_model(m, stoi(argv[1]), it->second);
-        for (int i = 0; i < sample.size(); i++)
+        cout<<"-------Calculating likelihoods with training set "<<it->first<<"------"<<endl;
+        
+        for (auto it2 = trTest.begin(); it2 != trTest.end(); ++it2)
         {
             try
             {
-                value = likelihood(m, sample[i]);
+                cout<<"Training set : "<<it2->first<<endl;
+                value = likelihood(m, it2->second);
                 if (value > best)
                 {
                     best = value;
-                    best_idx = i;
+                    best_name = it2->second;
                 }
+                cout<<"likelihood : "<<value<< endl;
             }
             catch (const std::exception &e)
             {
                 std::cerr << e.what() << '\n';
-                cout << "-";
+                cout << "Likelihood : -"<<endl;
                 value = -9999999;
             }
-            cout << value << " is the likelihood for test" << i << " under trained set " << it->first << endl;
+            
         }
-        cout << "the test with the highest likelihood for training set " <<it->first<< " was the number :" << best_idx << " With a likelihood of" << best << endl;
+        cout << "the test with the highest likelihood for training set " <<it->first<< " was : " << best_name << " With a likelihood of" << best << endl;
         best = -99999;
-        best_idx = 0;
+        best_name = "None";
         ++it;
     }
 
