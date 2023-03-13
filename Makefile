@@ -12,14 +12,13 @@ OBJECTS=main.o markov_model.o
 all: $(EXEC)
 
 markov: $(OBJECTS)
-    $(LD) -o $(EXEC) $(OBJECTS) $(LDFLAGS)
-    
+	$(LD) -o $(EXEC) $(OBJECTS) $(LDFLAGS)
+
 main.o: main.cpp 
-    $(CC) -c main.cpp -o main.o $(CFLAGS)
+	$(CC) -c main.cpp -o main.o $(CFLAGS)
 
 markov_model.o: markov_model.cpp 
-    $(CC) -c markov_model.cpp -o markov_model.o $(CFLAGS)
-
+	$(CC) -c markov_model.cpp -o markov_model.o $(CFLAGS)
 
 clean:
-    rm -f *.o $(EXEC) *~
+	rm -f *.o $(EXEC) *~
