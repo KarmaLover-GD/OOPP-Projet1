@@ -5,7 +5,7 @@
 static void fill_model(Model &m, unsigned int order, const std::string &s)
 {
     int occ;
-    for (int i = 0; i < s.length(); i++)
+    for (long unsigned int i = 0; i < s.length(); i++)
     {
         occ = 1;
         std::string tmp = "";
@@ -17,7 +17,7 @@ static void fill_model(Model &m, unsigned int order, const std::string &s)
 
         else
         {
-            for (int j = 0; j < order; j++)
+            for (unsigned int j = 0; j < order; j++)
             {
                 tmp = tmp + s[(i + j) % s.length()];
             }
@@ -39,7 +39,7 @@ void markov_model(Markov_model &m, unsigned int order, const std::string &s)
         throw std::length_error("tring must be longer than the order itself");
     }
 
-    for (int i = 0; i < s.length(); i++)
+    for (long unsigned int i = 0; i < s.length(); i++)
     {
         m.alphabet.insert(s[i]);
     }
@@ -76,11 +76,11 @@ void display_model(const Markov_model &m)
 
 double laplace(const Markov_model &m, const std::string &s)
 {
-    if(int(s.length()) != m.order+1 ){
+    if(int(s.length()) != (int)m.order+1 ){
         
         throw std::length_error("string must be of size order + 1"); //lenght _error()
     }
-    for(int i = 0; i< s.length(); i++){
+    for(long unsigned int i = 0; i< s.length(); i++){
         auto a = m.alphabet.find(s[i]);
         if(a == m.alphabet.end())
             throw std::domain_error("Unknow character"); // domain error()

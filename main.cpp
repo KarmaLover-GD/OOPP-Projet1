@@ -67,7 +67,6 @@ int main(int argc, char **argv)
     }
     int value = -99999;
     int best = -99999;
-    int best_idx = 0;
     string best_name = "None";
     auto it = trData.begin();
 
